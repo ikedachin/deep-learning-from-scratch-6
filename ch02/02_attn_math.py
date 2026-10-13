@@ -41,3 +41,7 @@ predicted_ratings, weights = attention(Q, K, V)
 # 結果の表示
 for movie, rating in zip(Q, predicted_ratings):
     print(f"映画 {movie.numpy()} の予測評価: {rating.item():.2f}")
+
+print("\n各映画の重み:")
+for movie, weight in zip(Q, weights):
+    print(f"映画 {movie.numpy()}: {weight.numpy()}")

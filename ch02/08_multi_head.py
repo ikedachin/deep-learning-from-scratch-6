@@ -25,7 +25,9 @@ Q = Q.view(B, C, H, D).transpose(1, 2)  # (B, H, C, D)
 K = K.view(B, C, H, D).transpose(1, 2)  # (B, H, C, D)
 V = V.view(B, C, H, D).transpose(1, 2)  # (B, H, C, D)
 
-scores = torch.matmul(Q, K.transpose(-2, -1))  # (B, H, C, C)
+K_t = K.transpose(-2, -1)  # (B, H, D, C)
+
+scores = torch.matmul(Q, K_t)  # (B, H, C, D) @ (B, H, D, C) = (B, H, C, C)
 scores = scores / (D ** 0.5)
 
 # マスク処理
@@ -39,6 +41,8 @@ hidden = torch.matmul(weights, V)   # (B, H, C, D)
 # 形状変換: (B, H, C, D) → (B, C, H*D)
 hidden = hidden.transpose(1, 2)  # (B, C, H, D)
 hidden = hidden.contiguous().view(B, C, H*D)  # (B, C, H*D)
+# hidden = hidden.flatten().view(B, C, H*D)  # (B, C, H*D)
+# hidden = hidden.reshape(B, C, H*D)  # (B, C, H*D)
 
 # 出力変換: (B, C, H*D) → (B, C, E)
 W_o = nn.Linear(H*D, E, bias=False)

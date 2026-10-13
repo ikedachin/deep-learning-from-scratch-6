@@ -32,8 +32,12 @@ def soft_dictionary(query, dictionary):
     # 類似度
     similarity = []
     for key in dictionary:
+        print(f"キー {key} に対する {query} の類似度を計算中...")
         s = np.dot(query, key)
+        print(f"計算結果: {s}")
         similarity.append(s)
+
+    print("類似度:", similarity)
 
     # ソフトマックス
     exp_similarity = np.exp(similarity)
@@ -41,7 +45,8 @@ def soft_dictionary(query, dictionary):
 
     # 重み付き和
     result = 0
-    for weight, value in zip(weights, dictionary.values()):
+    for weight, (key, value) in zip(weights, dictionary.items()):
+        print(f"キー {key} のSoftmax重み: {weight}")
         result += weight * value
 
     return result, weights
@@ -49,7 +54,11 @@ def soft_dictionary(query, dictionary):
 
 predicted_rating, weights = soft_dictionary(new_movie, movie_preferences)
 
+print(f"予測評価: {predicted_rating:.2f}")
+print(f"重み: {weights}")
+
 print(f"新しい映画 {new_movie} の予測評価: {predicted_rating:.2f} 点")
 print("\n各映画の重み:")
+
 for key, weight in zip(movie_preferences.keys(), weights):
     print(f"映画 {key}: {weight*100:.2f}%")

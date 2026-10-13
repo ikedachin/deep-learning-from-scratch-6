@@ -25,16 +25,19 @@ class Attention(nn.Module):
         scores = scores.masked_fill(mask == 0, float('-inf'))
 
         weights = F.softmax(scores, dim=-1)
+        print("weights shape:", weights.shape)
         hidden = torch.matmul(weights, V)
+        print("hidden shape:", hidden.shape)
 
         # 出力変換
         output = self.W_o(hidden)
+        print("output shape:", output.shape)
 
         return output
 
 attention = Attention(embed_dim=256, key_dim=64)
 x = torch.randn(2, 5, 256)
-y = attention(x)
+y = attention.forward(x)
 
 print("入力形状:", x.shape)
 print("出力形状:", y.shape)

@@ -19,7 +19,10 @@ class Attention(nn.Module):
 
         # Attentionマップの計算
         K_t = K.transpose(-2, -1)  # (B, D, C)
+        print("Q shape:", Q.shape)
+        print("K_t shape:", K_t.shape)
         scores = torch.matmul(Q, K_t)  # (B, C, C)
+        print("scores shape:", scores.shape)
         scores = scores / (self.key_dim ** 0.5)
 
         # マスクの適用
@@ -27,13 +30,15 @@ class Attention(nn.Module):
         mask = torch.tril(torch.ones(C, C, device=scores.device))
         scores = scores.masked_fill(mask == 0, float('-inf'))
         weights = F.softmax(scores, dim=-1)
+        print("weights shape:", weights.shape)
 
         output = torch.matmul(weights, V)  # (B, C, E)
+        print("output shape:", output.shape)
         return output
 
 attention = Attention(embed_dim=256, key_dim=64)
 x = torch.randn(2, 5, 256)  # (batch_size=2, context_len=5, embed_dim=256)
-y = attention(x)
+y = attention.forward(x)
 
 print("入力形状:", x.shape)
 print("出力形状:", y.shape)
