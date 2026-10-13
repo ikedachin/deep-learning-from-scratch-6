@@ -107,13 +107,13 @@ class BPETokenizer:
         return text
 
 # 事前トークン化対応のBPE学習
-sample_text = "Say hello! Why hello? Just hello.<|endoftext|>Good morning!"
+sample_text = "Say hello! Why hello? Just hello. Get up early. Get going. going my way."
 
-merge_rules = train_bpe(sample_text, vocab_size=270)
+merge_rules = train_bpe(sample_text, vocab_size=275)
 tokenizer = BPETokenizer(merge_rules)
 
 # エンコード/デコード
-text = "Say hello!"
+text = "Say hello! Get up early. I am going."
 ids = tokenizer.encode(text)
 decoded = tokenizer.decode(ids)
 

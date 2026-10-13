@@ -70,6 +70,7 @@ class BPETokenizer:
         self.merge_rules = merge_rules
         self.end_token = end_token
         self.end_token_id = 256 + len(merge_rules)
+        print(self.end_token_id)
 
         self.id_to_bytes = {i: bytes([i]) for i in range(256)}
         for (id1, id2), new_id in merge_rules.items():

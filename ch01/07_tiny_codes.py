@@ -12,3 +12,5 @@ merge_rules = train_bpe(text, vocab_size)
 # 学習済みマージルールをファイルに保存
 with open("codebot/merge_rules.pkl", "wb") as f:
     pickle.dump(merge_rules, f)
+
+print(merge_rules)
